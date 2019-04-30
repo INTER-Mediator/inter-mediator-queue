@@ -1,0 +1,25 @@
+{
+  "name": "inter-mediator-queue",
+  "version": "1.0.0",
+  "description": "The queue of INTER-Mediator core.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/INTER-Mediator/inter-mediator-queue.git"
+  },
+  "keywords": [
+    "INTER-Mediator",
+    "queue"
+  ],
+  "dependencies": {
+  },
+  "author": "Masayuki Nii",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/INTER-Mediator/inter-mediator-queue/issues"
+  },
+  "homepage": "https://github.com/INTER-Mediator/inter-mediator-queue#readme"
+}
