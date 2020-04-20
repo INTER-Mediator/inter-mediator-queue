@@ -48,7 +48,6 @@ const IMLibQueue = {
     },
 
     setTask: function (aTask, startHere, later = false) {
-        'use strict'
         if (startHere) {
             IMLibQueue.isExecute = true
             aTask(() => {
@@ -64,7 +63,6 @@ const IMLibQueue = {
     },
 
     setPriorTask: function (aTask, later = false) {
-        'use strict'
         IMLibQueue.tasks.unshift({do: aTask, later: later})
         if (!IMLibQueue.readyTo) {
             setTimeout(IMLibQueue.startNextTask, IMLibQueue.tasks[0].later ? IMLibQueue.laterWaitMS : 0)
