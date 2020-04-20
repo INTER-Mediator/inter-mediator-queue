@@ -100,13 +100,18 @@ const IMLibQueue = {
         }
         if (IMLibQueue.tasks.length > 0) {
             let aTask = IMLibQueue.tasks[0]
+            let isExists = false
             if (aTask.later) {
                 for (let i = 1; i < IMLibQueue.tasks.length; i++) {
                     if (!IMLibQueue.tasks[i].later) {
                         aTask = IMLibQueue.tasks[i]
                         IMLibQueue.tasks.splice(i, 1)
+                        isExists = true
                     }
                 }
+            }
+            if(!isExists) {
+                aTask = IMLibQueue.tasks.pop()
             }
             IMLibQueue.isExecute = true
             IMLibQueue.readyTo = false
