@@ -111,7 +111,7 @@ const IMLibQueue = {
                 }
             }
             if(!isExists) {
-                aTask = IMLibQueue.tasks.pop()
+                aTask = IMLibQueue.tasks.shift()
             }
             IMLibQueue.isExecute = true
             IMLibQueue.readyTo = false
