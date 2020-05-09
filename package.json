@@ -1,10 +1,11 @@
 {
   "name": "inter-mediator-queue",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "The queue of INTER-Mediator core.",
   "main": "index.js",
+  "type": "module",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node_modules/jest/bin/jest.js queue.test.js"
   },
   "repository": {
     "type": "git",
@@ -14,8 +15,10 @@
     "INTER-Mediator",
     "queue"
   ],
-  "dependencies": {
+  "devDependencies": {
+    "jest": "*"
   },
+  "dependencies": {},
   "author": "Masayuki Nii",
   "license": "MIT",
   "bugs": {
