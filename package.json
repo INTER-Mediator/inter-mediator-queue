@@ -1,28 +1,29 @@
 {
-  "name": "inter-mediator-queue",
-  "version": "1.0.7",
-  "description": "The queue of INTER-Mediator core.",
-  "main": "index.js",
-  "type": "module",
-  "scripts": {
-    "test": "node_modules/jest/bin/jest.js queue.test.js"
-  },
-  "repository": {
-    "type": "git",
-    "url": "git+https://github.com/INTER-Mediator/inter-mediator-queue.git"
-  },
-  "keywords": [
-    "INTER-Mediator",
-    "queue"
-  ],
-  "devDependencies": {
-    "jest": "*"
-  },
-  "dependencies": {},
-  "author": "Masayuki Nii",
-  "license": "MIT",
-  "bugs": {
-    "url": "https://github.com/INTER-Mediator/inter-mediator-queue/issues"
-  },
-  "homepage": "https://github.com/INTER-Mediator/inter-mediator-queue#readme"
+    "name": "inter-mediator-queue",
+    "version": "1.0.8",
+    "description": "The queue of INTER-Mediator core.",
+    "main": "index.js",
+    "type": "module",
+    "scripts": {
+        "test": "node_modules/jest/bin/jest.js queue.test.js"
+    },
+    "repository": {
+        "type": "git",
+        "url": "git+https://github.com/INTER-Mediator/inter-mediator-queue.git"
+    },
+    "keywords": [
+        "INTER-Mediator",
+        "queue"
+    ],
+    "devDependencies": {
+        "jest": "^26.1.0",
+        "lodash": ">=4.17.19"
+    },
+    "dependencies": {},
+    "author": "Masayuki Nii",
+    "license": "MIT",
+    "bugs": {
+        "url": "https://github.com/INTER-Mediator/inter-mediator-queue/issues"
+    },
+    "homepage": "https://github.com/INTER-Mediator/inter-mediator-queue#readme"
 }
