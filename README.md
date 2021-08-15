@@ -1,2 +1,2 @@
-# inter-mediator-queue [![Build Status](https://travis-ci.org/INTER-Mediator/inter-mediator-queue.svg?branch=master)](https://travis-ci.org/github/INTER-Mediator/inter-mediator-queue)
+# inter-mediator-queue [![Build Status](https://github.com/INTER-Mediator/inter-mediator-queue/actions/workflows/node.js.yml/badge.svg)](https://github.com/INTER-Mediator/inter-mediator-queue/actions/workflows/node.js.yml)
 The queue of INTER-Mediator core.
