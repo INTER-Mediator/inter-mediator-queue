@@ -16,8 +16,7 @@
         "queue"
     ],
     "devDependencies": {
-        "jest": "^26.1.0",
-        "lodash": ">=4.17.19"
+        "jest": "^29.3.1"
     },
     "dependencies": {},
     "author": "Masayuki Nii",
