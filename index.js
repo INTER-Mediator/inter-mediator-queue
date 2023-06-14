@@ -18,112 +18,117 @@
  * @constructor
  */
 const IMLibQueue = {
-    tasks: [], // {do: (complete)=>{}, later: boolean}
-    isExecute: false,
-    dataStore: {},
-    dsLabel: 0,
-    readyTo: false,
-    laterWaitMS: 100,
+  tasks: [], // {do: (complete)=>{}, later: boolean}
+  isExecute: false,
+  dataStore: {},
+  dsLabel: 0,
+  readyTo: false,
+  laterWaitMS: 100,
 
-    getNewLabel: function () {
-        'use strict'
-        IMLibQueue.dsLabel++
-        return IMLibQueue.dsLabel
-    },
+  getNewLabel: function () {
+    'use strict'
+    IMLibQueue.dsLabel++
+    return IMLibQueue.dsLabel
+  },
 
-    getDataStore: function (label, key) {
-        'use strict'
-        if (!IMLibQueue.dataStore[label]) {
-            IMLibQueue.dataStore[label] = {}
-        }
-        return IMLibQueue.dataStore[label][key]
-    },
-
-    setDataStore: function (label, key, value) {
-        'use strict'
-        if (!IMLibQueue.dataStore[label]) {
-            IMLibQueue.dataStore[label] = {}
-        }
-        IMLibQueue.dataStore[label][key] = value
-    },
-
-    setTask: function (aTask, startHere, later = false) {
-        if (startHere) {
-            IMLibQueue.isExecute = true
-            aTask(() => {
-            })
-            IMLibQueue.isExecute = false
-        } else {
-            IMLibQueue.tasks.push({do: aTask, later: later})
-            if (!IMLibQueue.readyTo) {
-                setTimeout(IMLibQueue.startNextTask, IMLibQueue.tasks[0].later ? 100 : 0)
-                IMLibQueue.readyTo = true
-            }
-        }
-    },
-
-    setPriorTask: function (aTask, later = false) {
-        IMLibQueue.tasks.unshift({do: aTask, later: later})
-        if (!IMLibQueue.readyTo) {
-            setTimeout(IMLibQueue.startNextTask, IMLibQueue.tasks[0].later ? IMLibQueue.laterWaitMS : 0)
-            IMLibQueue.readyTo = true
-        }
-    },
-
-    setSequentialTasks: function (tasksArray) {
-        'use strict'
-        Array.prototype.push.apply(IMLibQueue.tasks, tasksArray)
-        if (!IMLibQueue.readyTo) {
-            setTimeout(IMLibQueue.startNextTask, IMLibQueue.tasks[0].later ? IMLibQueue.laterWaitMS : 0)
-            IMLibQueue.readyTo = true
-        }
-    },
-
-    setSequentialPriorTasks: function (tasksArray) {
-        'use strict'
-        Array.prototype.push.apply(tasksArray, IMLibQueue.tasks)
-        IMLibQueue.tasks = tasksArray
-        if (!IMLibQueue.readyTo) {
-            setTimeout(IMLibQueue.startNextTask, IMLibQueue.tasks[0].later ? IMLibQueue.laterWaitMS : 0)
-            IMLibQueue.readyTo = true
-        }
-    },
-
-    startNextTask: function () {
-        'use strict'
-        if (IMLibQueue.isExecute) {
-            if (IMLibQueue.tasks.length > 0) {
-                setTimeout(IMLibQueue.startNextTask, IMLibQueue.tasks[0].later ? IMLibQueue.laterWaitMS : 0)
-                IMLibQueue.readyTo = true
-            }
-            return
-        }
-        if (IMLibQueue.tasks.length > 0) {
-            let aTask = IMLibQueue.tasks[0]
-            let isExists = false
-            if (aTask.later) {
-                for (let i = 1; i < IMLibQueue.tasks.length; i++) {
-                    if (!IMLibQueue.tasks[i].later) {
-                        aTask = IMLibQueue.tasks[i]
-                        IMLibQueue.tasks.splice(i, 1)
-                        isExists = true
-                    }
-                }
-            }
-            if(!isExists) {
-                aTask = IMLibQueue.tasks.shift()
-            }
-            IMLibQueue.isExecute = true
-            IMLibQueue.readyTo = false
-            aTask.do(function () {
-                IMLibQueue.isExecute = false
-                if (IMLibQueue.tasks.length > 0) {
-                    setTimeout(IMLibQueue.startNextTask, IMLibQueue.tasks[0].later ? IMLibQueue.laterWaitMS : 0)
-                    IMLibQueue.readyTo = true
-                }
-            })
-        }
+  getDataStore: function (label, key) {
+    'use strict'
+    if (!IMLibQueue.dataStore[label]) {
+      IMLibQueue.dataStore[label] = {}
     }
+    return IMLibQueue.dataStore[label][key]
+  },
+
+  setDataStore: function (label, key, value) {
+    'use strict'
+    if (!IMLibQueue.dataStore[label]) {
+      IMLibQueue.dataStore[label] = {}
+    }
+    IMLibQueue.dataStore[label][key] = value
+  },
+
+  setTask: function (aTask, startHere, later = false) {
+    if (startHere) {
+      IMLibQueue.isExecute = true
+      aTask(() => {
+      })
+      IMLibQueue.isExecute = false
+    } else {
+      IMLibQueue.tasks.push({do: aTask, later: later})
+      if (!IMLibQueue.readyTo) {
+        setTimeout(IMLibQueue.startNextTask, IMLibQueue.tasks[0].later ? 100 : 0)
+        IMLibQueue.readyTo = true
+      }
+    }
+  },
+
+  setPriorTask: function (aTask, later = false) {
+    IMLibQueue.tasks.unshift({do: aTask, later: later})
+    if (!IMLibQueue.readyTo) {
+      setTimeout(IMLibQueue.startNextTask, IMLibQueue.tasks[0].later ? IMLibQueue.laterWaitMS : 0)
+      IMLibQueue.readyTo = true
+    }
+  },
+
+  setSequentialTasks: function (tasksArray) {
+    'use strict'
+    for (const aTask of tasksArray) {
+      IMLibQueue.tasks.push({do: aTask, later: false})
+    }
+    if (!IMLibQueue.readyTo) {
+      setTimeout(IMLibQueue.startNextTask, IMLibQueue.tasks[0].later ? IMLibQueue.laterWaitMS : 0)
+      IMLibQueue.readyTo = true
+    }
+  },
+
+  setSequentialPriorTasks: function (tasksArray) {
+    'use strict'
+    let start = 0
+    for (const aTask of tasksArray) {
+      IMLibQueue.tasks.splice(start, 0, {do: aTask, later: false})
+      start += 1
+    }
+    if (!IMLibQueue.readyTo) {
+      setTimeout(IMLibQueue.startNextTask, IMLibQueue.tasks[0].later ? IMLibQueue.laterWaitMS : 0)
+      IMLibQueue.readyTo = true
+    }
+  },
+
+  startNextTask: function () {
+    'use strict'
+    if (IMLibQueue.isExecute) {
+      if (IMLibQueue.tasks.length > 0) {
+        setTimeout(IMLibQueue.startNextTask, IMLibQueue.tasks[0].later ? IMLibQueue.laterWaitMS : 0)
+        IMLibQueue.readyTo = true
+      }
+      return
+    }
+    if (IMLibQueue.tasks.length > 0) {
+      let aTask = IMLibQueue.tasks[0]
+      let isExists = false
+      if (aTask.later) {
+        for (let i = 1; i < IMLibQueue.tasks.length; i++) {
+          if (!IMLibQueue.tasks[i].later) {
+            aTask = IMLibQueue.tasks[i]
+            IMLibQueue.tasks.splice(i, 1)
+            isExists = true
+          }
+        }
+      }
+      if (!isExists) {
+        aTask = IMLibQueue.tasks.shift()
+      }
+      IMLibQueue.isExecute = true
+      IMLibQueue.readyTo = false
+      aTask.do(function () {
+        IMLibQueue.isExecute = false
+        if (IMLibQueue.tasks.length > 0) {
+          setTimeout(IMLibQueue.startNextTask, IMLibQueue.tasks[0].later ? IMLibQueue.laterWaitMS : 0)
+          IMLibQueue.readyTo = true
+        }
+      })
+    }
+  }
 }
 
 // @@IM@@IgnoringRestOfFile

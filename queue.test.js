@@ -22,7 +22,7 @@ test('IMLibQueue Test: should execute immidiately', function () {
   console.log('===check point 1-3 ===')
   expect(counter1).toBe(3)
 })
-test('IMLibQueue Test: execute lately', function () {
+test('IMLibQueue Test: execute lately', done => {
     'use strict'
     counter2 = 1
     IMLibQueue.setTask(function (finishProc) {
@@ -36,12 +36,13 @@ test('IMLibQueue Test: execute lately', function () {
       counter2++
       expect(counter2).toBe(3)
       finishProc()
+      done()
     })
     console.log('===check point 2-3 ===')
     expect(counter2).toBe(1)
   }
 )
-test('IMLibQueue Test: execute sequential tasks', function () {
+test('IMLibQueue Test: execute sequential tasks', done => {
     'use strict'
     counter5 = 1
     IMLibQueue.setTask(function (finishProc) {
@@ -76,12 +77,13 @@ test('IMLibQueue Test: execute sequential tasks', function () {
       counter5++
       expect(counter5).toBe(7)
       finishProc()
+      done()
     })
     console.log('===check point 5-7 ===')
     expect(counter5).toBe(1)
   }
 )
-test('IMLibQueue Test: execute sequential tasks reverse order', function () {
+test('IMLibQueue Test: execute sequential tasks reverse order', done => {
     'use strict'
     counter6 = 1
     IMLibQueue.setPriorTask(function (finishProc) {
@@ -110,18 +112,20 @@ test('IMLibQueue Test: execute sequential tasks reverse order', function () {
       counter6++
       expect(counter6).toBe(6)
       finishProc()
+      done()
     }])
     IMLibQueue.setPriorTask(function (finishProc) {
-      console.log('===check point 6-6 ===')
+      //console.log('===check point 6-6 ===')
       counter6++
       expect(counter6).toBe(2)
       finishProc()
     })
     console.log('===check point 6-7 ===')
     expect(counter6).toBe(1)
+
   }
 )
-test('IMLibQueue Test: execute lately with reverse order', function () {
+test('IMLibQueue Test: execute lately with reverse order', done => {
     'use strict'
     counter4 = 1
     IMLibQueue.setPriorTask(function (finishProc) {
@@ -135,12 +139,13 @@ test('IMLibQueue Test: execute lately with reverse order', function () {
       counter4++
       expect(counter4).toBe(2)
       finishProc()
+      done()
     })
     console.log('===check point 4-3 ===')
     expect(counter4).toBe(1)
   }
 )
-test('IMLibQueue Test: data relaying', function () {
+test('IMLibQueue Test: data relaying', done => {
     'use strict'
     var label = IMLibQueue.getNewLabel()
     counter3 = 1
@@ -155,13 +160,13 @@ test('IMLibQueue Test: data relaying', function () {
     IMLibQueue.setTask(function (finishProc) {
       var l = label
       console.log('===check point 3-2 ===')
-      expect(IMLibQueue.getDataStore(l, 'key3'), 300)
+      expect(IMLibQueue.getDataStore(l, 'key3')).toBe(300)
       finishProc()
     })
     IMLibQueue.setTask(function (finishProc) {
       var l = label
       console.log('===check point 3-3 ===')
-      expect(IMLibQueue.getDataStore(l, 'key2'), 200)
+      expect(IMLibQueue.getDataStore(l, 'key2')).toBe( 200)
       IMLibQueue.setDataStore(l, 'key4', 400)
       counter3++
       expect(counter3).toBe(2)
@@ -173,12 +178,13 @@ test('IMLibQueue Test: data relaying', function () {
       expect(IMLibQueue.getDataStore(l, 'key4')).toBe(400)
       expect(IMLibQueue.getDataStore(l, 'key1')).toBe(100)
       finishProc()
+      done()
     })
     console.log('===check point 3-5 ===')
     expect(counter3).toBe(1)
   }
 )
-test('IMLibQueue Test: should execute immidiately once more', function () {
+test('IMLibQueue Test: should execute immidiately once more', done => {
   'use strict'
   var label = IMLibQueue.getNewLabel()
   IMLibQueue.setDataStore(label, 'counter', 100)
@@ -186,7 +192,7 @@ test('IMLibQueue Test: should execute immidiately once more', function () {
     var l = label
     var c = IMLibQueue.getDataStore(l, 'counter')
     console.log('===check point 11-1 ===')
-    expect(c).toBe( 100)
+    expect(c).toBe(100)
     IMLibQueue.setDataStore(l, 'counter', c + 1)
     finishProc()
   }, true)
@@ -194,13 +200,21 @@ test('IMLibQueue Test: should execute immidiately once more', function () {
     var l = label
     var c = IMLibQueue.getDataStore(l, 'counter')
     console.log('===check point 11-2 ===')
-    expect(c).toBe( 101)
+    expect(c).toBe(101)
     IMLibQueue.setDataStore(l, 'counter', c + 1)
-    expect(IMLibQueue.getDataStore(l, 'counter')).toBe( 102)
+    expect(IMLibQueue.getDataStore(l, 'counter')).toBe(102)
     finishProc()
+    done()
   }, true)
   console.log('===check point 11-3 ===')
   var c = IMLibQueue.getDataStore(label, 'counter')
   IMLibQueue.setDataStore(label, 'counter', c + 1)
-  expect(IMLibQueue.getDataStore(label, 'counter')).toBe( 103)
+  expect(IMLibQueue.getDataStore(label, 'counter')).toBe(103)
+})
+
+test('wait for somethin', done => {
+  setTimeout(() => {
+    expect(counter5).toBe(7)
+    done()
+  }, 4500)
 })
